@@ -17,6 +17,7 @@
   - 🧪 [Playwright](https://playwright.dev) for End-to-End testing.
   - 🦇 Dark mode support.
 - 🐋 [Docker Compose](https://www.docker.com) for development and production.
+- 💸 [**x402**](https://github.com/x402-foundation/x402) HTTP 402 pay-per-request payments (USDC on Base) for monetizing API routes.
 - 🔒 Secure password hashing by default.
 - 🔑 JWT (JSON Web Token) authentication.
 - 📫 Email based password recovery.
@@ -205,6 +206,44 @@ The input variables, with their default values (some auto generated) are:
 - `emails_from_email`: (default: `"info@example.com"`) The email account to send emails from, you can set it later in .env.
 - `postgres_password`: (default: `"changethis"`) The password for the PostgreSQL database, stored in .env, you can generate one with the method above.
 - `sentry_dsn`: (default: "") The DSN for Sentry, if you are using it, you can set it later in .env.
+
+## x402 Payments
+
+This project can gate API routes behind the [x402](https://github.com/x402-foundation/x402)
+"HTTP 402 Payment Required" protocol, using
+[`fastapi-x402`](https://github.com/jordo1138/fastapi-x402). Payments settle in
+USDC; a **facilitator** verifies and settles on-chain, so the backend only needs
+a receiving wallet address — no gas, node, or private keys.
+
+It ships **disabled by default** (`X402_ENABLED=false`), so paid routes behave as
+ordinary free routes until you opt in.
+
+### Configure (in the root `.env`)
+
+| Variable | Purpose |
+| --- | --- |
+| `X402_ENABLED` | Master switch. `false` (default) leaves paid routes free. |
+| `X402_NETWORK` | `base` (mainnet, real USDC) or `base-sepolia` (testnet). |
+| `X402_PAY_TO` | Your USDC receiving wallet. **Required** on mainnet. |
+| `X402_FACILITATOR_URL` | Optional. Blank uses the library default per network. |
+| `X402_PREMIUM_PRICE` | Price for the premium route, e.g. `$0.01`. |
+
+The app refuses to start if `X402_ENABLED=true` and `X402_NETWORK=base` while
+`X402_PAY_TO` is empty — a guard against settling real funds with no recipient.
+
+### Try it
+
+The route `GET /api/v1/items/premium/sample` is decorated with `@pay(...)`. When
+x402 is enabled, a request with no payment returns `402` plus a JSON body whose
+`accepts[]` lists the payment requirements (`scheme`, `network`, `payTo`,
+`maxAmountRequired`, `asset`, `resource`). The client then signs an EIP-3009
+authorization, base64-encodes it, and re-requests with an `X-PAYMENT` header; on
+success the server returns `200` with an `X-PAYMENT-RESPONSE` settlement receipt.
+
+For testing, use `X402_NETWORK=base-sepolia` with the public testnet facilitator
+(`https://x402.org/facilitator`). Mainnet settlement uses the Coinbase CDP
+facilitator. See [backend/README.md](./backend/README.md#x402-payments) for the
+full backend details.
 
 ## Backend Development
 

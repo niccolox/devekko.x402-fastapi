@@ -2,12 +2,17 @@ import uuid
 from typing import Any
 
 from fastapi import APIRouter, HTTPException
+from fastapi_x402 import pay
 from sqlmodel import col, func, select
 
 from app.api.deps import CurrentUser, SessionDep
+from app.core.config import settings
 from app.models import Item, ItemCreate, ItemPublic, ItemsPublic, ItemUpdate, Message
 
 router = APIRouter(prefix="/items", tags=["items"])
+
+# Stable id/owner for the synthesized sample returned when the catalog is empty.
+_SAMPLE_ITEM_ID = uuid.UUID("00000000-0000-0000-0000-0000000004a2")
 
 
 @router.get("/", response_model=ItemsPublic)
@@ -43,6 +48,33 @@ def read_items(
 
     items_public = [ItemPublic.model_validate(item) for item in items]
     return ItemsPublic(data=items_public, count=count)
+
+
+@router.get("/premium/sample", response_model=ItemPublic)
+@pay(settings.X402_PREMIUM_PRICE)  # type: ignore[untyped-decorator]
+async def read_premium_item(session: SessionDep) -> Any:
+    """
+    Premium, pay-per-call item access via x402.
+
+    Gated by the x402 payment middleware rather than JWT auth: when
+    ``X402_ENABLED`` is true, callers must provide a valid ``X-PAYMENT`` header
+    (otherwise the middleware returns ``402`` with payment requirements). When
+    x402 is disabled the route behaves as an ordinary, free endpoint.
+
+    Returns the most recently created item as the paid content, or a synthesized
+    sample when the catalog is empty.
+    """
+    item = session.exec(
+        select(Item).order_by(col(Item.created_at).desc()).limit(1)
+    ).first()
+    if item is not None:
+        return item
+    return ItemPublic(
+        id=_SAMPLE_ITEM_ID,
+        owner_id=_SAMPLE_ITEM_ID,
+        title="Premium sample item",
+        description="Unlocked via an x402 payment.",
+    )
 
 
 @router.get("/{id}", response_model=ItemPublic)

@@ -162,3 +162,41 @@ def test_delete_item_not_enough_permissions(
     assert response.status_code == 403
     content = response.json()
     assert content["detail"] == "Not enough permissions"
+
+
+def test_premium_item_is_free_when_x402_disabled(
+    client: TestClient, db: Session
+) -> None:
+    # Default settings have X402_ENABLED=False, so no payment middleware is
+    # installed and the paid route behaves like an ordinary endpoint.
+    create_random_item(db)
+    response = client.get(f"{settings.API_V1_STR}/items/premium/sample")
+    assert response.status_code == 200
+    content = response.json()
+    assert "id" in content
+    assert "title" in content
+
+
+def test_premium_item_requires_payment_when_x402_enabled() -> None:
+    # Full verify+settle needs a live chain, so we only assert the 402 challenge
+    # shape that the middleware returns when no X-PAYMENT header is supplied.
+    from fastapi import FastAPI
+    from fastapi_x402 import init_x402
+
+    from app.api.routes import items
+
+    pay_to = "0x0000000000000000000000000000000000000001"
+    app = FastAPI()
+    # load_dotenv_file=False keeps the challenge hermetic; otherwise the project
+    # .env (X402_NETWORK) would override the network passed here.
+    init_x402(app, pay_to=pay_to, network="base-sepolia", load_dotenv_file=False)
+    app.include_router(items.router, prefix=settings.API_V1_STR)
+
+    client = TestClient(app)
+    response = client.get(f"{settings.API_V1_STR}/items/premium/sample")
+    assert response.status_code == 402
+    body = response.json()
+    accepts = body["accepts"]
+    assert isinstance(accepts, list) and accepts
+    assert accepts[0]["scheme"] == "exact"
+    assert accepts[0]["payTo"] == pay_to

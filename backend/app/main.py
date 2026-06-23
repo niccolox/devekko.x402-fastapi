@@ -1,6 +1,7 @@
 import sentry_sdk
 from fastapi import FastAPI
 from fastapi.routing import APIRoute
+from fastapi_x402 import init_x402
 from starlette.middleware.cors import CORSMiddleware
 
 from app.api.main import api_router
@@ -28,6 +29,19 @@ if settings.all_cors_origins:
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],
+        # Let browser clients read the x402 settlement receipt.
+        expose_headers=["X-PAYMENT-RESPONSE"],
+    )
+
+# Enable x402 payments. The @pay decorator on routes only gates requests once
+# init_x402 has installed the middleware, so leaving this off makes paid routes
+# behave as ordinary routes.
+if settings.X402_ENABLED:
+    init_x402(
+        app,
+        pay_to=settings.X402_PAY_TO,
+        network=settings.X402_NETWORK,
+        facilitator_url=settings.X402_FACILITATOR_URL,
     )
 
 app.include_router(api_router, prefix=settings.API_V1_STR)

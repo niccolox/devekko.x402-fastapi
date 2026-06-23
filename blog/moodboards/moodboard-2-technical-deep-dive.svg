@@ -1,0 +1,120 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="1020" viewBox="0 0 1440 1020" font-family="'JetBrains Mono','Courier New',monospace">
+  <defs>
+    <linearGradient id="bg2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0c1116"/>
+      <stop offset="1" stop-color="#0f1620"/>
+    </linearGradient>
+    <pattern id="blueprint" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0 H0 V40" fill="none" stroke="#1b2a36" stroke-width="1"/>
+    </pattern>
+  </defs>
+
+  <rect width="1440" height="1020" fill="url(#bg2)"/>
+  <rect width="1440" height="1020" fill="url(#blueprint)" opacity="0.5"/>
+
+  <!-- HEADER -->
+  <text x="70" y="92" fill="#5c7a8a" font-size="20" letter-spacing="6">MOOD BOARD · BLOG 02 — TECHNICAL</text>
+  <text x="70" y="150" fill="#e6f0f2" font-size="52" font-weight="bold">x402 on FastAPI — Deep Dive</text>
+  <text x="70" y="188" fill="#7ee787" font-size="22">$ curl -i /premium  →  HTTP/1.1 402 Payment Required</text>
+  <line x1="70" y1="216" x2="1370" y2="216" stroke="#21323e" stroke-width="1.5"/>
+
+  <!-- TONE -->
+  <text x="70" y="262" fill="#5c7a8a" font-size="16" letter-spacing="4">TONE &amp; FEELING</text>
+  <g font-size="18">
+    <rect x="70" y="280" width="170" height="42" rx="6" fill="none" stroke="#7ee787"/>
+    <text x="155" y="307" fill="#7ee787" text-anchor="middle">Schematic</text>
+    <rect x="256" y="280" width="160" height="42" rx="6" fill="none" stroke="#58a6ff"/>
+    <text x="336" y="307" fill="#58a6ff" text-anchor="middle">Precise</text>
+    <rect x="432" y="280" width="150" height="42" rx="6" fill="none" stroke="#d2a8ff"/>
+    <text x="507" y="307" fill="#d2a8ff" text-anchor="middle">Hands-on</text>
+    <rect x="598" y="280" width="200" height="42" rx="6" fill="none" stroke="#f0b24a"/>
+    <text x="698" y="307" fill="#f0b24a" text-anchor="middle">Blueprint-clean</text>
+    <rect x="814" y="280" width="170" height="42" rx="6" fill="none" stroke="#7ee787"/>
+    <text x="899" y="307" fill="#7ee787" text-anchor="middle">No hype</text>
+  </g>
+
+  <!-- PALETTE: syntax highlighting -->
+  <text x="70" y="380" fill="#5c7a8a" font-size="16" letter-spacing="4">PALETTE — "terminal / syntax-highlight on carbon"</text>
+  <g>
+    <rect x="70" y="398" width="150" height="140" rx="6" fill="#0c1116"/>
+    <text x="80" y="560" fill="#8a9aa6" font-size="14">Carbon</text><text x="80" y="578" fill="#566873" font-size="12">#0C1116</text>
+    <rect x="232" y="398" width="150" height="140" rx="6" fill="#161b22"/>
+    <text x="242" y="560" fill="#8a9aa6" font-size="14">Panel</text><text x="242" y="578" fill="#566873" font-size="12">#161B22</text>
+    <rect x="394" y="398" width="150" height="140" rx="6" fill="#7ee787"/>
+    <text x="404" y="560" fill="#8a9aa6" font-size="14">200 Green</text><text x="404" y="578" fill="#566873" font-size="12">#7EE787</text>
+    <rect x="556" y="398" width="150" height="140" rx="6" fill="#58a6ff"/>
+    <text x="566" y="560" fill="#8a9aa6" font-size="14">Keyword Blue</text><text x="566" y="578" fill="#566873" font-size="12">#58A6FF</text>
+    <rect x="718" y="398" width="150" height="140" rx="6" fill="#d2a8ff"/>
+    <text x="728" y="560" fill="#8a9aa6" font-size="14">Decorator Violet</text><text x="728" y="578" fill="#566873" font-size="12">#D2A8FF</text>
+    <rect x="880" y="398" width="150" height="140" rx="6" fill="#f0b24a"/>
+    <text x="890" y="560" fill="#8a9aa6" font-size="14">402 Amber</text><text x="890" y="578" fill="#566873" font-size="12">#F0B24A</text>
+  </g>
+
+  <!-- TYPOGRAPHY -->
+  <text x="70" y="640" fill="#5c7a8a" font-size="16" letter-spacing="4">TYPOGRAPHY</text>
+  <text x="70" y="686" fill="#e6f0f2" font-size="34">Monospace everywhere — code is the hero</text>
+  <text x="70" y="712" fill="#8a9aa6" font-size="15">JetBrains Mono / SF Mono / Fira Code · headings, body, captions all share the grid</text>
+  <text x="70" y="752" fill="#d2a8ff" font-size="19">@pay(<tspan fill="#7ee787">"$0.01"</tspan>) <tspan fill="#58a6ff">async def</tspan> read_premium_item(...)</text>
+  <text x="70" y="784" fill="#566873" font-size="13">Real code as decoration · syntax colors carry the palette</text>
+
+  <!-- MOTIF: protocol sequence -->
+  <rect x="1058" y="280" width="312" height="540" rx="10" fill="#11171f" stroke="#21323e"/>
+  <text x="1214" y="316" fill="#5c7a8a" font-size="16" letter-spacing="3" text-anchor="middle">CORE MOTIF — HANDSHAKE</text>
+  <g font-size="13" fill="#8a9aa6" text-anchor="middle">
+    <text x="1110" y="352">client</text>
+    <text x="1214" y="352">server</text>
+    <text x="1320" y="352">facilitator</text>
+  </g>
+  <g stroke="#2b3b47" stroke-width="1.5" stroke-dasharray="3 5">
+    <line x1="1110" y1="362" x2="1110" y2="800"/>
+    <line x1="1214" y1="362" x2="1214" y2="800"/>
+    <line x1="1320" y1="362" x2="1320" y2="800"/>
+  </g>
+  <g font-size="11" font-family="Verdana,sans-serif">
+    <line x1="1110" y1="392" x2="1214" y2="392" stroke="#8a9aa6" stroke-width="1.5"/>
+    <text x="1162" y="386" fill="#8a9aa6" text-anchor="middle">GET</text>
+    <line x1="1214" y1="430" x2="1110" y2="430" stroke="#f0b24a" stroke-width="2"/>
+    <text x="1162" y="424" fill="#f0b24a" text-anchor="middle">402 accepts[]</text>
+    <line x1="1110" y1="476" x2="1214" y2="476" stroke="#7ee787" stroke-width="1.5"/>
+    <text x="1162" y="470" fill="#7ee787" text-anchor="middle">X-PAYMENT</text>
+    <line x1="1214" y1="520" x2="1320" y2="520" stroke="#58a6ff" stroke-width="1.5"/>
+    <text x="1267" y="514" fill="#58a6ff" text-anchor="middle">/verify</text>
+    <line x1="1320" y1="558" x2="1214" y2="558" stroke="#58a6ff" stroke-width="1.5"/>
+    <text x="1267" y="552" fill="#58a6ff" text-anchor="middle">isValid</text>
+    <line x1="1214" y1="596" x2="1320" y2="596" stroke="#58a6ff" stroke-width="1.5"/>
+    <text x="1267" y="590" fill="#58a6ff" text-anchor="middle">/settle</text>
+    <line x1="1320" y1="634" x2="1214" y2="634" stroke="#58a6ff" stroke-width="1.5"/>
+    <text x="1267" y="628" fill="#58a6ff" text-anchor="middle">tx hash</text>
+    <line x1="1214" y1="672" x2="1110" y2="672" stroke="#7ee787" stroke-width="2"/>
+    <text x="1162" y="666" fill="#7ee787" text-anchor="middle">200 OK</text>
+  </g>
+  <!-- EIP-3009 block stack -->
+  <g>
+    <text x="1214" y="724" fill="#5c7a8a" font-size="13" text-anchor="middle" font-family="Verdana,sans-serif">EIP-3009 signed authorization</text>
+    <g fill="none" stroke="#d2a8ff" stroke-width="2">
+      <rect x="1108" y="740" width="46" height="46" rx="5"/>
+      <rect x="1168" y="740" width="46" height="46" rx="5"/>
+      <rect x="1228" y="740" width="46" height="46" rx="5"/>
+      <rect x="1288" y="740" width="46" height="46" rx="5"/>
+    </g>
+    <g fill="#d2a8ff" font-size="10" text-anchor="middle" font-family="Verdana,sans-serif">
+      <text x="1131" y="768">from</text><text x="1191" y="768">value</text>
+      <text x="1251" y="768">nonce</text><text x="1311" y="768">sig</text>
+    </g>
+  </g>
+
+  <!-- ARCH NOTES -->
+  <text x="70" y="836" fill="#5c7a8a" font-size="16" letter-spacing="4">ARCHITECTURE CUES (recurring visual ideas)</text>
+  <g font-family="Verdana,sans-serif" font-size="15" fill="#c0ccd4">
+    <text x="70" y="868">▸ middleware as a gate <tspan fill="#566873">— paywall drawn in FRONT of the handler box, never inside it</tspan></text>
+    <text x="70" y="894">▸ feature-flag toggle <tspan fill="#566873">— a literal OFF switch; "disabled by default" shown as a dimmed route</tspan></text>
+    <text x="70" y="920">▸ atomic units <tspan fill="#566873">— "10000" string, not 0.01 float; money rendered as exact integers</tspan></text>
+    <text x="70" y="946">▸ no keys on the server <tspan fill="#566873">— a crossed-out wallet/key glyph beside the server box</tspan></text>
+  </g>
+
+  <!-- IMAGERY -->
+  <line x1="70" y1="966" x2="1030" y2="966" stroke="#21323e"/>
+  <g font-family="Verdana,sans-serif">
+    <text x="70" y="996" fill="#5c7a8a" font-size="15" letter-spacing="3">IMAGERY: terminal screenshots · sequence diagrams · PCB/blueprint textures · macro keycaps · zero stock-photo people.</text>
+  </g>
+</svg>

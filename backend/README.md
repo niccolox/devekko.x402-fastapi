@@ -1,5 +1,47 @@
 # FastAPI Project - Backend
 
+## x402 Payments
+
+This backend can gate routes behind the [x402](https://github.com/x402-foundation/x402)
+"HTTP 402 Payment Required" protocol using
+[`fastapi-x402`](https://github.com/jordo1138/fastapi-x402). Payments settle in
+USDC; a **facilitator** verifies and settles on-chain, so the server never holds
+gas or runs a node — it only needs a receiving wallet address.
+
+### Configuration
+
+Set these in the top-level `.env`:
+
+| Variable | Purpose |
+| --- | --- |
+| `X402_ENABLED` | Master switch. `false` (default) leaves paid routes free. |
+| `X402_NETWORK` | `base` (mainnet, real USDC) or `base-sepolia` (testnet). |
+| `X402_PAY_TO` | Your USDC receiving wallet. **Required** on mainnet. |
+| `X402_FACILITATOR_URL` | Optional. Blank uses the library default per network. |
+| `X402_PREMIUM_PRICE` | Price for the premium route, e.g. `$0.01`. |
+
+The app refuses to start if `X402_ENABLED=true`, `X402_NETWORK=base`, and
+`X402_PAY_TO` is empty — a guard against settling real funds with no recipient.
+
+### Gated route
+
+`GET /api/v1/items/premium/sample` is decorated with `@pay(...)`. When x402 is
+enabled it requires payment; when disabled it serves normally for free.
+
+### Client flow
+
+1. `GET /api/v1/items/premium/sample` with no payment → `402` with a JSON body
+   whose `accepts[]` lists the payment requirements (`scheme`, `network`,
+   `payTo`, `maxAmountRequired`, `asset`, `resource`).
+2. The client signs an EIP-3009 `transferWithAuthorization` and base64-encodes
+   the payload.
+3. Re-request with header `X-PAYMENT: <base64 payload>`. On success the server
+   returns `200` plus an `X-PAYMENT-RESPONSE` header (the settlement receipt).
+
+For testing, point at the public testnet facilitator
+(`https://x402.org/facilitator`) with `X402_NETWORK=base-sepolia`. Mainnet
+settlement uses the Coinbase CDP facilitator.
+
 ## Requirements
 
 * [Docker](https://www.docker.com/).

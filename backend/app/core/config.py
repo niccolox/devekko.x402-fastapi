@@ -94,6 +94,31 @@ class Settings(BaseSettings):
     FIRST_SUPERUSER: EmailStr
     FIRST_SUPERUSER_PASSWORD: str
 
+    # x402 payments (https://github.com/x402-foundation/x402)
+    # Master switch. Off by default so existing routes and tests are unaffected.
+    X402_ENABLED: bool = False
+    # Wallet address that receives payments (your USDC receiving address).
+    X402_PAY_TO: str = ""
+    # Settlement network. "base" is mainnet (real USDC); the rest are testnets.
+    X402_NETWORK: Literal[
+        "base-sepolia", "base", "avalanche-fuji", "avalanche", "iotex"
+    ] = "base-sepolia"
+    # Optional custom facilitator. None uses the library default
+    # (testnet: https://x402.org/facilitator; mainnet: Coinbase CDP facilitator).
+    X402_FACILITATOR_URL: str | None = None
+    # Price charged for the premium endpoint, as a dollar string.
+    X402_PREMIUM_PRICE: str = "$0.01"
+
+    @model_validator(mode="after")
+    def _enforce_x402_mainnet_pay_to(self) -> Self:
+        # Guard against settling real funds with no/misconfigured recipient.
+        if self.X402_ENABLED and self.X402_NETWORK == "base" and not self.X402_PAY_TO:
+            raise ValueError(
+                "X402_PAY_TO must be set to a receiving wallet address when "
+                "X402_ENABLED is true and X402_NETWORK is 'base' (mainnet)."
+            )
+        return self
+
     def _check_default_secret(self, var_name: str, value: str | None) -> None:
         if value == "changethis":
             message = (
